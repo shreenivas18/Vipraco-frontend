@@ -27,7 +27,7 @@ const Dashboard = () => {
                 setMessages([
                     {
                         sender: 'bot',
-                        text: `Hi ${currentUser.firstName || currentUser.id}! I'm VipraCo, your intelligent HR assistant. How can I help you today?`,
+                        text: `Hi ${currentUser.role || currentUser.id}! I'm VipraCo, your intelligent HR assistant. How can I help you today?`,
                     },
                 ]);
             } catch (error) {
@@ -56,22 +56,43 @@ const Dashboard = () => {
         e.preventDefault();
         if (!query.trim()) return;
 
-        const newMessages = [...messages, { sender: 'user', text: query }];
+        const userMessage = { sender: 'user', text: query };
+        const newMessages = [...messages, userMessage];
         setMessages(newMessages);
+        const currentQuery = query;
         setQuery('');
         setIsTyping(true);
 
-        // **TODO**: Replace with actual API call once endpoint is known
-        setTimeout(() => {
+        try {
+            // Determine the correct endpoint based on the user's role
+            const endpoint = user.role === 'Admin' ? '/admin/ai-query' : '/user/ai-query';
+
+            // Prepare the request body
+            const requestBody = { prompt: currentQuery };
+
+            // Make the API call
+            const result = await api.post(endpoint, requestBody);
+
+            let botResponse = 'Sorry, I could not find an answer.';
+            if (result.data && result.data.message) {
+                botResponse = result.data.message;
+            }
+
             setMessages([
                 ...newMessages,
-                {
-                    sender: 'bot',
-                    text: 'This is a placeholder response. The real answer will come from the backend.',
-                },
+                { sender: 'bot', text: botResponse },
             ]);
+
+        } catch (err) {
+            console.error('API Error:', err);
+            const errorMessage = err.response?.data?.message || 'An error occurred while fetching the response.';
+            setMessages([
+                ...newMessages,
+                { sender: 'bot', text: errorMessage },
+            ]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
 
     return (
