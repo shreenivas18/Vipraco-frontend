@@ -5,11 +5,26 @@ import "./style.css";
 export const Component = () => {
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [error, setError] = React.useState("");
+
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // In a real app, you'd have authentication logic here.
-        // For now, we'll just navigate to the dashboard.
-        navigate("/dashboard");
+        setError("");
+        try {
+            const api = await import("../api");
+            const response = await api.default.post("/auth/login", { email, password });
+            const { token } = response.data.data;
+            localStorage.setItem("token", token);
+            navigate("/dashboard");
+        } catch (err) {
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("Login failed. Please try again.");
+            }
+        }
     };
 
     return (
@@ -58,16 +73,24 @@ export const Component = () => {
 
                         <div id="login-form" className="p-8">
                             <form className="space-y-6" onSubmit={handleLogin}>
+                                {error && (
+                                    <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>
+                                )}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                                     <div className="relative">
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">
-                                            person
+                                            mail
                                         </span>
                                         <input
-                                            type="text"
-                                            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 hover:border-gray-300 hover:shadow-sm bg-gray-50 focus:bg-white"
-                                            placeholder="Enter your username"
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            autoComplete="email"
+                                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="Enter your email"
+                                            value={email}
+                                            onChange={e => setEmail(e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -80,8 +103,13 @@ export const Component = () => {
                                         </span>
                                         <input
                                             type="password"
-                                            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 hover:border-gray-300 hover:shadow-sm bg-gray-50 focus:bg-white"
+                                            name="password"
+                                            id="password"
+                                            autoComplete="current-password"
+                                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                             placeholder="Enter your password"
+                                            value={password}
+                                            onChange={e => setPassword(e.target.value)}
                                         />
                                     </div>
                                 </div>
