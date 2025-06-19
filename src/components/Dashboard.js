@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import './Dashboard.css'; // Import new styles
+import Waves from './Waves'; // Import the new Waves component
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -89,6 +90,14 @@ const Dashboard = () => {
                     <button onClick={handleLogout} className="logout-button">Logout</button>
                 </header>
                 <main className="chat-container">
+                    <Waves
+                        backgroundColor="#f0f2f5"
+                        lineColor="#d8dbdf"
+                        waveAmpX={24}
+                        waveAmpY={12}
+                        waveSpeedX={0.01}
+                        waveSpeedY={0.004}
+                    />
                     <div className="message-list">
                         {messages.map((msg, index) => (
                             <div key={index} className={`message ${msg.sender}`}>

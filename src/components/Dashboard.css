@@ -67,16 +67,19 @@
 }
 
 .chat-container {
+    position: relative; /* Contain the absolutely positioned Waves component */
     flex-grow: 1;
     padding: 1.5rem;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background-color: #f0f2f5;
+    /* The background is now handled by the Waves component */
 }
 
 .message-list {
     flex-grow: 1;
+    position: relative; /* Needed for z-index to work */
+    z-index: 1; /* Bring the messages to the front */
 }
 
 @keyframes fadeIn {
