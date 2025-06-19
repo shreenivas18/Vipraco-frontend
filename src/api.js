@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "/", // Use proxy
+  baseURL: 'https://tluy8f133b.execute-api.us-east-1.amazonaws.com/Prod',
   headers: {
     'Content-Type': 'application/json',
   },
