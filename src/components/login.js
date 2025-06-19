@@ -49,8 +49,12 @@ export const Component = () => {
             navigate("/dashboard");
         } catch (err) {
             console.error("Signup Error Response:", err.response); // Detailed error logging
-            const message = err.response?.data?.message || "Signup failed. Please check your details.";
-            setSignupError(message);
+            if (err.response && err.response.status === 500) {
+                setSignupError("A server error occurred. Please try again later.");
+            } else {
+                const message = err.response?.data?.message || "Signup failed. Please check your details.";
+                setSignupError(message);
+            }
         }
     };
 
