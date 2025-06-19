@@ -91,12 +91,17 @@ const Dashboard = () => {
                 </header>
                 <main className="chat-container">
                     <Waves
-                        backgroundColor="#f0f2f5"
-                        lineColor="#d8dbdf"
-                        waveAmpX={24}
-                        waveAmpY={12}
-                        waveSpeedX={0.01}
-                        waveSpeedY={0.004}
+                        lineColor="rgba(0,0,0,0.05)" // A very subtle black for the lines
+                        backgroundColor="rgba(255, 255, 255, 0.2)"
+                        waveSpeedX={0.02}
+                        waveSpeedY={0.01}
+                        waveAmpX={40}
+                        waveAmpY={20}
+                        friction={0.9}
+                        tension={0.01}
+                        maxCursorMove={120}
+                        xGap={12}
+                        yGap={36}
                     />
                     <div className="message-list">
                         {messages.map((msg, index) => (
