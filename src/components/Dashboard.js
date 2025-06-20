@@ -56,7 +56,7 @@ const Dashboard = () => {
         e.preventDefault();
         if (!query.trim()) return;
 
-        const userMessage = { sender: 'user', text: query };
+        const userMessage = { sender: 'user', text: query, data: null };
         const newMessages = [...messages, userMessage];
         setMessages(newMessages);
         const currentQuery = query;
@@ -64,37 +64,76 @@ const Dashboard = () => {
         setIsTyping(true);
 
         try {
-            // Determine the correct endpoint based on the user's role
             const endpoint = user.role === 'Admin' ? '/admin/ai-query' : '/user/ai-query';
-
-            // Prepare the request body
             const requestBody = { prompt: currentQuery };
-
-            // Make the API call
             const result = await api.post(endpoint, requestBody);
 
-            let botResponse = 'Sorry, I could not find an answer.';
-            if (result.data && result.data.data && result.data.data.message) {
-                botResponse = result.data.data.message;
-            } else if (result.data && result.data.message) { // Fallback for simpler response
-                botResponse = result.data.message;
-            }
+            let botResponseText = 'Sorry, I could not find an answer.';
+            let botResponseData = null;
 
+            if (result.data) {
+                botResponseText = result.data.message || botResponseText;
+                if (Array.isArray(result.data.data) && result.data.data.length > 0) {
+                    botResponseData = result.data.data;
+                }
+            }
+            
             setMessages([
                 ...newMessages,
-                { sender: 'bot', text: botResponse },
+                { sender: 'bot', text: botResponseText, data: botResponseData },
             ]);
 
         } catch (err) {
             console.error('API Error:', err);
-            const errorMessage = err.response?.data?.data?.message || err.response?.data?.message || 'An error occurred while fetching the response.';
+            const errorMessage = err.response?.data?.message || 'An error occurred while fetching the response.';
             setMessages([
                 ...newMessages,
-                { sender: 'bot', text: errorMessage },
+                { sender: 'bot', text: errorMessage, data: null },
             ]);
         } finally {
             setIsTyping(false);
         }
+    };
+
+    const renderData = (data) => {
+        if (!Array.isArray(data) || data.length === 0) {
+            return null;
+        }
+
+        const firstItem = data[0];
+        if (typeof firstItem !== 'object' || firstItem === null) {
+            return (
+                <ul className="data-list">
+                    {data.map((item, index) => (
+                        <li key={index}>{String(item)}</li>
+                    ))}
+                </ul>
+            );
+        }
+
+        const headers = Object.keys(firstItem);
+        return (
+            <div className="data-table-container">
+                <table className="data-table">
+                    <thead>
+                        <tr>
+                            {headers.map(header => (
+                                <th key={header}>{header.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((row, index) => (
+                            <tr key={index}>
+                                {headers.map(header => (
+                                    <td key={header}>{String(row[header])}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
     };
 
     return (
@@ -130,7 +169,10 @@ const Dashboard = () => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`message ${msg.sender}`}>
                                 <div className="message-avatar">{msg.sender === 'bot' ? '🤖' : '👤'}</div>
-                                <div className="message-content">{msg.text}</div>
+                                <div className="message-content">
+                                    <div className="message-text">{msg.text}</div>
+                                    {msg.sender === 'bot' && msg.data && renderData(msg.data)}
+                                </div>
                             </div>
                         ))}
                         {isTyping && (
