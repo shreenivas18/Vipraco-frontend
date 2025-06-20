@@ -1,10 +1,11 @@
 .hero-container {
   position: relative;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 4rem; /* Adjust padding for a wider look */
+  padding: 2rem 4rem 2rem 6rem; /* Adjust padding for a wider look */
   width: 100%; /* Extend to the full width of the parent */
   background-color: transparent; /* Transparent background */
   gap: 2rem;
@@ -75,21 +76,23 @@
 }
 
 .hero-text button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  background-color: #d90429;
+  background-color: #D30707;
   color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 9999px; /* Pill shape */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(211, 7, 7, 0.3);
+  display: inline-block;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hero-text button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(217, 4, 41, 0.3);
-  background-color: #b80021;
 }
 
 @media screen and (max-width: 768px) {

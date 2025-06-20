@@ -21,9 +21,7 @@ const Hero = () => {
           <span>Instant HR Answers</span>
         </h1>
         <p>
-          VipraCo is an AI-powered HR assistant that provides immediate, accurate
-          responses to employee questions 24/7, reducing HR workload and
-          improving employee satisfaction.
+          VipraCo is an AI-powered HR assistant providing immediate, personalized answers to your questions. Our smart agent understands context to pull real-time data about your leave, salary, and more, freeing up HR teams and improving your experience.
         </p>
         <button onClick={handleGetStartedClick}>Get Started</button>
       </div>

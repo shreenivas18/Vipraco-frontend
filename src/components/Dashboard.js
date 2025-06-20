@@ -183,7 +183,7 @@ const Dashboard = () => {
                                     disabled={isTyping}
                                 />
                                 <button type="submit" className="send-button" disabled={isTyping || !query.trim()}>
-                                    Send
+                                    ✨Generate
                                 </button>
                             </form>
                         </footer>

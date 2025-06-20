@@ -20,7 +20,7 @@ export const Component = () => {
         email: "",
         password: "",
         role: "employee",
-        organizationId: "TECHCORP_IN", // Default value from docs
+        organizationId: "", // Default value from docs
     });
     const [signupError, setSignupError] = React.useState("");
 
@@ -35,8 +35,8 @@ export const Component = () => {
             localStorage.setItem("token", token);
             navigate("/dashboard");
         } catch (err) {
-            const message = err.response?.data?.message || "Login failed. Please try again.";
-            setLoginError(message);
+            const message = err.response?.data?.message || "Invalid credentials";
+            window.alert(message);
         }
     };
 
@@ -52,10 +52,10 @@ export const Component = () => {
         } catch (err) {
             console.error("Signup Error Response:", err.response); // Detailed error logging
             if (err.response && err.response.status === 500) {
-                setSignupError("A server error occurred. Please try again later.");
+                window.alert("A server error occurred. Please try again later.");
             } else {
                 const message = err.response?.data?.message || "Signup failed. Please check your details.";
-                setSignupError(message);
+                window.alert(message);
             }
         }
     };
@@ -87,12 +87,14 @@ export const Component = () => {
                         {/* Tabs */}
                         <div className="flex">
                             <button
-                                className="flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 bg-primary-500 text-white hover:bg-primary-600"
+                                className="flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 onClick={(e) => {
                                     document.getElementById("login-form").style.display = "block";
                                     document.getElementById("signup-form").style.display = "none";
                                     e.target.classList.add("bg-primary-500", "text-white");
+                                    e.target.classList.remove("bg-gray-100", "text-gray-700");
                                     e.target.nextElementSibling.classList.remove("bg-primary-500", "text-white");
+                                    e.target.nextElementSibling.classList.add("bg-gray-100", "text-gray-700");
                                 }}
                             >
                                 Login
@@ -103,10 +105,12 @@ export const Component = () => {
                                     document.getElementById("login-form").style.display = "none";
                                     document.getElementById("signup-form").style.display = "block";
                                     e.target.classList.add("bg-primary-500", "text-white");
+                                    e.target.classList.remove("bg-gray-100", "text-gray-700");
                                     e.target.previousElementSibling.classList.remove("bg-primary-500", "text-white");
+                                    e.target.previousElementSibling.classList.add("bg-gray-100", "text-gray-700");
                                 }}
                             >
-                                Sign Up
+                                Signup
                             </button>
                         </div>
 
@@ -123,7 +127,7 @@ export const Component = () => {
                                     <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your password" required />
                                 </div>
                                 <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50">
-                                    Login/Signup
+                                    Login
                                 </button>
                             </form>
                         </div>
@@ -158,9 +162,11 @@ export const Component = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Organization ID</label>
                                     <input type="text" name="organizationId" value={signupData.organizationId} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter organization ID" required />
                                 </div>
+                                <div style={{ marginTop: '24px' }}>
                                 <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50">
                                     Create Account
                                 </button>
+                                </div>
                             </form>
                         </div>
 
