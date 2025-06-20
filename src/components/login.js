@@ -23,11 +23,14 @@ export const Component = () => {
         organizationId: "", // Default value from docs
     });
     const [signupError, setSignupError] = React.useState("");
+    const [activeTab, setActiveTab] = React.useState('login');
+    const [isLoading, setIsLoading] = React.useState(false);
 
     // --- API HANDLERS ---
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoginError("");
+        setIsLoading(true);
         try {
             const api = (await import("../api")).default;
             const response = await api.post("/auth/login", { email: loginEmail, password: loginPassword });
@@ -37,12 +40,15 @@ export const Component = () => {
         } catch (err) {
             const message = err.response?.data?.message || "Invalid credentials";
             window.alert(message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const handleSignup = async (e) => {
         e.preventDefault();
         setSignupError("");
+        setIsLoading(true);
         try {
             const api = (await import("../api")).default;
             const response = await api.post("/auth/signup", signupData);
@@ -57,6 +63,8 @@ export const Component = () => {
                 const message = err.response?.data?.message || "Signup failed. Please check your details.";
                 window.alert(message);
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -87,89 +95,78 @@ export const Component = () => {
                         {/* Tabs */}
                         <div className="flex">
                             <button
-                                className="flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                onClick={(e) => {
-                                    document.getElementById("login-form").style.display = "block";
-                                    document.getElementById("signup-form").style.display = "none";
-                                    e.target.classList.add("bg-primary-500", "text-white");
-                                    e.target.classList.remove("bg-gray-100", "text-gray-700");
-                                    e.target.nextElementSibling.classList.remove("bg-primary-500", "text-white");
-                                    e.target.nextElementSibling.classList.add("bg-gray-100", "text-gray-700");
-                                }}
+                                className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 ${activeTab === 'login' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                onClick={() => setActiveTab('login')}
                             >
                                 Login
                             </button>
                             <button
-                                className="flex-1 py-4 px-6 text-center font-semibold text-gray-600 transition-all duration-300 hover:bg-gray-100"
-                                onClick={(e) => {
-                                    document.getElementById("login-form").style.display = "none";
-                                    document.getElementById("signup-form").style.display = "block";
-                                    e.target.classList.add("bg-primary-500", "text-white");
-                                    e.target.classList.remove("bg-gray-100", "text-gray-700");
-                                    e.target.previousElementSibling.classList.remove("bg-primary-500", "text-white");
-                                    e.target.previousElementSibling.classList.add("bg-gray-100", "text-gray-700");
-                                }}
+                                className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 ${activeTab === 'signup' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-100'}`}
+                                onClick={() => setActiveTab('signup')}
                             >
                                 Signup
                             </button>
                         </div>
 
                         {/* Login Form */}
-                        <div id="login-form" className="p-8">
-                            <form onSubmit={handleLogin} className="space-y-6">
-                                {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                    <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your email" required />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                                    <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your password" required />
-                                </div>
-                                <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50">
-                                    Login
-                                </button>
-                            </form>
-                        </div>
+                        {activeTab === 'login' && (
+                            <div id="login-form" className="p-8">
+                                <form onSubmit={handleLogin} className="space-y-6">
+                                    {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                        <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your email" required />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                        <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your password" required />
+                                    </div>
+                                    <button type="submit" disabled={isLoading} className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                        {isLoading ? 'Please wait...' : 'Login'}
+                                    </button>
+                                </form>
+                            </div>
+                        )}
 
                         {/* Signup Form */}
-                        <div id="signup-form" className="p-8" style={{ display: "none" }}>
-                            <form onSubmit={handleSignup} className="space-y-5">
-                                {signupError && <p className="text-red-500 text-sm">{signupError}</p>}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                                        <input type="text" name="firstName" value={signupData.firstName} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="First name" required />
+                        {activeTab === 'signup' && (
+                            <div id="signup-form" className="p-8">
+                                <form onSubmit={handleSignup} className="space-y-5">
+                                    {signupError && <p className="text-red-500 text-sm">{signupError}</p>}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                            <input type="text" name="firstName" value={signupData.firstName} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="First name" required />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                            <input type="text" name="lastName" value={signupData.lastName} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Last name" required />
+                                        </div>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                                        <input type="text" name="lastName" value={signupData.lastName} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Last name" required />
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                        <input type="email" name="email" value={signupData.email} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your email" required />
                                     </div>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                    <input type="email" name="email" value={signupData.email} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your email" required />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                                    <input type="password" name="password" value={signupData.password} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Create a password" required />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                                    <input type="text" name="role" id="role" value="Employee" readOnly className="w-full px-4 py-3 border border-gray-200 rounded-xl" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Organization ID</label>
-                                    <input type="text" name="organizationId" value={signupData.organizationId} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter organization ID" required />
-                                </div>
-                                <div style={{ marginTop: '24px' }}>
-                                <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50">
-                                    Create Account
-                                </button>
-                                </div>
-                            </form>
-                        </div>
-
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                        <input type="password" name="password" value={signupData.password} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Create a password" required />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                                        <input type="text" name="role" id="role" value="Employee" readOnly className="w-full px-4 py-3 border border-gray-200 rounded-xl" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Organization ID</label>
+                                        <input type="text" name="organizationId" value={signupData.organizationId} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter organization ID" required />
+                                    </div>
+                                    <div style={{ marginTop: '24px' }}>
+                                    <button type="submit" disabled={isLoading} className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed">
+                                        {isLoading ? 'Please wait...' : 'Create Account'}
+                                    </button>
+                                    </div>
+                                </form>
+                            </div>
+                        )}
                     </div>
 
                     {/* Footer */}

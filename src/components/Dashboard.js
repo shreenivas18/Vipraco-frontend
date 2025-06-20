@@ -6,7 +6,7 @@ import './Dashboard.css'; // Import new styles
 import Waves from './Waves'; // Import the new Waves component
 import VoiceChat from './VoiceChat'; // Import the new VoiceChat component
 import Navbar from '../components2/Navbar/Navbar';
-import botImage from '../assets/bot-img.png'; // Import the bot image
+import botImage from '../assets/robot.png'; // Import the new bot image
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);

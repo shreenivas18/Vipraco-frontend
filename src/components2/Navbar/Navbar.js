@@ -20,7 +20,7 @@ const Navbar = ({ showLoginButton = true, isLandingPage = true }) => {
     }
   };
 
-  const handleVobotClick = (e) => {
+  const handleVipraCoClick = (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     if (token) {
@@ -57,7 +57,7 @@ const Navbar = ({ showLoginButton = true, isLandingPage = true }) => {
         <a href="#" onClick={(e) => handleNavClick(e, 'hero')}>Home</a>
         <a href="#" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
         <a href="#" onClick={(e) => handleNavClick(e, 'how-it-works')}>How It Works</a>
-        <a href="#" onClick={handleVobotClick}>vObot</a>
+        <a href="#" onClick={handleVipraCoClick}>VipraCo</a>
         {showLoginButton &&
           (localStorage.getItem('token') ? (
             <div className="navbar-login-mobile">
