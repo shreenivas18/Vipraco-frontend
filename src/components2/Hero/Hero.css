@@ -1,0 +1,88 @@
+.hero-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 4rem; /* Adjust padding for a wider look */
+  width: 100%; /* Extend to the full width of the parent */
+  background-color: transparent; /* Transparent background */
+  gap: 2rem;
+}
+
+.hero-text {
+  max-width: 600px;
+  position: relative; /* Ensure text stays on top of the animation */
+  z-index: 1;
+  flex: 1.5; /* Give more space to text */
+}
+
+.hero-image {
+  flex: 0.8; /* Give less space to the image, pushing it right */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-bot-img {
+  max-width: 350px; /* Adjust size as needed */
+  height: auto;
+  animation: float 6s ease-in-out infinite; /* Floating animation */
+}
+
+/* Style the canvas from the Threads component */
+.hero-image canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Place the canvas behind the bot */
+}
+
+/* Floating animation keyframes */
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-20px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
+}
+
+.hero-text h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.hero-text h1 span {
+  color: #d90429;
+}
+
+.hero-text p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.hero-text button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #d90429;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.hero-text button:hover {
+  background-color: #b80021;
+}

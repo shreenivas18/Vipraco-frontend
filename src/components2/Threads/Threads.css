@@ -1,0 +1,9 @@
+.threads-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed; /* Keep it fixed in the background */
+  top: 0;
+  left: 0;
+  z-index: 0; /* Bring forward to receive mouse events */
+  opacity: 0.15; /* Further reduce opacity for better readability */
+}

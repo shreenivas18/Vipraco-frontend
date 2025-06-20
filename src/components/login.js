@@ -64,12 +64,6 @@ export const Component = () => {
         setSignupData({ ...signupData, [e.target.name]: e.target.value });
     };
 
-    const handleRoleSelect = (role, e) => {
-        setSignupData({ ...signupData, role: role.toLowerCase() });
-        document.getElementById("role-selected").textContent = role;
-        e.target.closest("details").open = false;
-    };
-
     return (
         <div id="webcrumbs">
             <div className="w-full min-h-screen bg-gray-50 px-8 py-12">
@@ -155,19 +149,7 @@ export const Component = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                                    <details className="relative">
-                                        <summary className="w-full px-4 py-3 border border-gray-200 rounded-xl cursor-pointer list-none flex justify-between items-center">
-                                            <span id="role-selected" className="text-gray-700">Employee</span>
-                                            <span className="material-symbols-outlined text-gray-400">expand_more</span>
-                                        </summary>
-                                        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg mt-1 z-50">
-                                            {["Employee", "Manager", "Admin"].map(role => (
-                                                <div key={role} className="px-4 py-3 hover:bg-gray-50 cursor-pointer" onClick={(e) => handleRoleSelect(role, e)}>
-                                                    {role}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </details>
+                                    <input type="text" name="role" id="role" value="Employee" readOnly className="w-full px-4 py-3 border border-gray-200 rounded-xl" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Organization ID</label>
