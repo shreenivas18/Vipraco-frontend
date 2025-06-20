@@ -12,7 +12,7 @@
 /* The main chat window */
 .dashboard-container {
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
     height: 90vh;
     max-height: 750px;
     display: flex;
@@ -64,6 +64,74 @@
 
 .logout-button:hover {
     background-color: #d8dbdf;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.back-button:hover {
+    background-color: #e4e6eb;
+}
+
+.back-button .material-symbols-outlined {
+    font-size: 1.5rem;
+    color: #65676b;
+}
+
+/* Mode selection screen styles */
+.mode-selection-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.chat-mode-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 280px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #e9e9e9;
+}
+
+.chat-mode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.chat-mode-card .material-symbols-outlined {
+    font-size: 3.5rem;
+    color: #0084ff;
+    margin-bottom: 1rem;
+}
+
+.chat-mode-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1c1e21;
+    margin: 0 0 0.5rem 0;
+}
+
+.chat-mode-card p {
+    font-size: 0.9rem;
+    color: #65676b;
+    line-height: 1.4;
+    margin: 0;
 }
 
 .chat-container {

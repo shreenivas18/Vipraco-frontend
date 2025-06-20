@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import './Dashboard.css'; // Import new styles
 import Waves from './Waves'; // Import the new Waves component
+import VoiceChat from './VoiceChat'; // Import the new VoiceChat component
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -11,6 +12,7 @@ const Dashboard = () => {
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef(null);
+    const [chatMode, setChatMode] = useState('selection'); // 'selection', 'text', 'voice'
 
     // Scroll to the bottom of the chat on new message
     useEffect(() => {
@@ -136,11 +138,87 @@ const Dashboard = () => {
         );
     };
 
+    const renderContent = () => {
+        switch (chatMode) {
+            case 'text':
+                return (
+                    <>
+                        <main className="chat-container">
+                            <Waves
+                                lineColor="rgba(0,0,0,0.05)"
+                                backgroundColor="rgba(255, 255, 255, 0.2)"
+                            />
+                            <div className="message-list">
+                                {messages.map((msg, index) => (
+                                    <div key={index} className={`message ${msg.sender}`}>
+                                        <div className="message-avatar">{msg.sender === 'bot' ? '🤖' : '👤'}</div>
+                                        <div className="message-content">
+                                            <div className="message-text">{msg.text}</div>
+                                            {msg.sender === 'bot' && msg.data && renderData(msg.data)}
+                                        </div>
+                                    </div>
+                                ))}
+                                {isTyping && (
+                                    <div className="message bot">
+                                        <div className="message-avatar">🤖</div>
+                                        <div className="message-content typing-indicator">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                )}
+                                <div ref={messagesEndRef} />
+                            </div>
+                        </main>
+                        <footer className="query-form">
+                            <form onSubmit={handleSendMessage} style={{ display: 'flex', width: '100%' }}>
+                                <input
+                                    type="text"
+                                    className="query-input"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    placeholder="Ask a question about your leave, payroll, benefits..."
+                                    disabled={isTyping}
+                                />
+                                <button type="submit" className="send-button" disabled={isTyping || !query.trim()}>
+                                    Send
+                                </button>
+                            </form>
+                        </footer>
+                    </>
+                );
+            case 'voice':
+                return <VoiceChat />;
+            case 'selection':
+            default:
+                return (
+                    <main className="mode-selection-container">
+                        <div className="chat-mode-card" onClick={() => setChatMode('text')}>
+                            <span className="material-symbols-outlined">chat</span>
+                            <h2>Text Chat</h2>
+                            <p>Type your questions and get answers from the HR assistant.</p>
+                        </div>
+                        <div className="chat-mode-card" onClick={() => setChatMode('voice')}>
+                            <span className="material-symbols-outlined">mic</span>
+                            <h2>Voice Chat</h2>
+                            <p>Speak your questions and hear the responses from the HR assistant.</p>
+                        </div>
+                    </main>
+                );
+        }
+    };
+
     return (
         <div className="page-container">
             <div className="dashboard-container">
                 <header className="dashboard-header">
                     <div>
+                        {chatMode !== 'selection' && (
+                            <button onClick={() => setChatMode('selection')} className="back-button">
+                                <span className="material-symbols-outlined">arrow_back</span>
+                            </button>
+                        )}
                         <h1>VipraCo HR Assistant</h1>
                         {user && (
                             <div className="user-info">
@@ -151,58 +229,7 @@ const Dashboard = () => {
                     </div>
                     <button onClick={handleLogout} className="logout-button">Logout</button>
                 </header>
-                <main className="chat-container">
-                    <Waves
-                        lineColor="rgba(0,0,0,0.05)" // A very subtle black for the lines
-                        backgroundColor="rgba(255, 255, 255, 0.2)"
-                        waveSpeedX={0.02}
-                        waveSpeedY={0.01}
-                        waveAmpX={40}
-                        waveAmpY={20}
-                        friction={0.9}
-                        tension={0.01}
-                        maxCursorMove={120}
-                        xGap={12}
-                        yGap={36}
-                    />
-                    <div className="message-list">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`message ${msg.sender}`}>
-                                <div className="message-avatar">{msg.sender === 'bot' ? '🤖' : '👤'}</div>
-                                <div className="message-content">
-                                    <div className="message-text">{msg.text}</div>
-                                    {msg.sender === 'bot' && msg.data && renderData(msg.data)}
-                                </div>
-                            </div>
-                        ))}
-                        {isTyping && (
-                            <div className="message bot">
-                                <div className="message-avatar">🤖</div>
-                                <div className="message-content typing-indicator">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </div>
-                        )}
-                        <div ref={messagesEndRef} />
-                    </div>
-                </main>
-                <footer className="query-form">
-                    <form onSubmit={handleSendMessage} style={{ display: 'flex', width: '100%' }}>
-                        <input
-                            type="text"
-                            className="query-input"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Ask a question about your leave, payroll, benefits..."
-                            disabled={isTyping}
-                        />
-                        <button type="submit" className="send-button" disabled={isTyping || !query.trim()}>
-                            Send
-                        </button>
-                    </form>
-                </footer>
+                {renderContent()}
             </div>
         </div>
     );

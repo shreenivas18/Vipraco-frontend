@@ -19,4 +19,27 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// --- Voice API Instance ---
+// IMPORTANT: Replace with your actual voice service URL
+const VOICE_API_URL = 'https://your-voice-api-endpoint.com/api';
+
+const voiceApi = axios.create({
+  baseURL: VOICE_API_URL,
+});
+
+// Attach JWT token to every voice request as well
+voiceApi.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export { api, voiceApi };
+
+// Default export for backward compatibility
 export default api;
