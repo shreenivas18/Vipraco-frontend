@@ -12,6 +12,12 @@ html {
   z-index: 1;
 }
 
+.page-with-navbar {
+  padding-top: 80px; /* Adjust to navbar height */
+}
+
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

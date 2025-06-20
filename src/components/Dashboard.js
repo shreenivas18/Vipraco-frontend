@@ -4,6 +4,7 @@ import api from '../api';
 import './Dashboard.css'; // Import new styles
 import Waves from './Waves'; // Import the new Waves component
 import VoiceChat from './VoiceChat'; // Import the new VoiceChat component
+import Navbar from '../components2/Navbar/Navbar';
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -210,7 +211,9 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="page-container">
+        <>
+            <Navbar showLoginButton={false} isLandingPage={false} />
+            <div className="page-container page-with-navbar">
             <div className="dashboard-container">
                 <header className="dashboard-header">
                     <div>
@@ -232,6 +235,7 @@ const Dashboard = () => {
                 {renderContent()}
             </div>
         </div>
+        </>
     );
 };
 

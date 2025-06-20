@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import Navbar from '../components2/Navbar/Navbar';
 
 
 export const Component = () => {
@@ -65,7 +66,9 @@ export const Component = () => {
     };
 
     return (
-        <div id="webcrumbs">
+        <>
+            <Navbar showLoginButton={false} isLandingPage={false} />
+            <div id="webcrumbs" className="page-with-navbar">
             <div className="w-full min-h-screen bg-gray-50 px-8 py-12">
                 <div className="max-w-md mx-auto">
                     {/* Header */}
@@ -170,5 +173,6 @@ export const Component = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };

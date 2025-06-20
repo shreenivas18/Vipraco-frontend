@@ -1,8 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Hero.css';
 import botImage from '../../assets/bot-img.png';
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleGetStartedClick = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    } else {
+      navigate('/login');
+    }
+  };
   return (
     <div id="hero" className="hero-container">
       <div className="hero-text">
@@ -15,7 +25,7 @@ const Hero = () => {
           responses to employee questions 24/7, reducing HR workload and
           improving employee satisfaction.
         </p>
-        <Link to="/login"><button>Get Started</button></Link>
+        <button onClick={handleGetStartedClick}>Get Started</button>
       </div>
       <div className="hero-image">
         <img src={botImage} alt="VipraCo AI Bot" className="hero-bot-img" />
