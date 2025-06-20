@@ -53,9 +53,16 @@
   background-color: #d90429;
 }
 
-.feature-group {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  align-items: stretch;
+@media screen and (max-width: 768px) {
+  .features-section {
+    padding: 3rem 1rem;
+  }
+
+  .features-section h2 {
+    font-size: 2rem;
+  }
+
+  .carousel-container {
+    padding: 1rem;
+  }
 }

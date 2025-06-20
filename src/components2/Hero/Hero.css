@@ -8,6 +8,7 @@
   width: 100%; /* Extend to the full width of the parent */
   background-color: transparent; /* Transparent background */
   gap: 2rem;
+  text-align: left;
 }
 
 .hero-text {
@@ -15,6 +16,7 @@
   position: relative; /* Ensure text stays on top of the animation */
   z-index: 1;
   flex: 1.5; /* Give more space to text */
+  text-align: left;
 }
 
 .hero-image {
@@ -81,8 +83,33 @@
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hero-text button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(217, 4, 41, 0.3);
   background-color: #b80021;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-container {
+    flex-direction: column;
+    padding: 2rem 1rem;
+    text-align: left;
+  }
+
+  .hero-text {
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-bot-img {
+    max-width: 250px;
+    margin-top: 2rem;
+  }
 }

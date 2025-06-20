@@ -44,11 +44,6 @@ const featuresData = [
 ];
 
 const Features = () => {
-  const chunkedFeatures = [];
-  for (let i = 0; i < featuresData.length; i += 3) {
-    chunkedFeatures.push(featuresData.slice(i, i + 3));
-  }
-
   return (
     <section id="features" className="features-section">
       <h2>Powerful HR Features</h2>
@@ -57,7 +52,6 @@ const Features = () => {
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={30}
-          slidesPerView={1}
           loop={true}
           navigation
           pagination={{ clickable: true }}
@@ -66,19 +60,28 @@ const Features = () => {
             disableOnInteraction: false,
           }}
           className="features-carousel"
+          breakpoints={{
+            320: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }}
         >
-          {chunkedFeatures.map((chunk, chunkIndex) => (
-            <SwiperSlide key={chunkIndex}>
-              <div className="feature-group">
-                {chunk.map((feature, featureIndex) => (
-                  <FeatureCard
-                    key={featureIndex}
-                    icon={feature.icon}
-                    title={feature.title}
-                    description={feature.description}
-                  />
-                ))}
-              </div>
+          {featuresData.map((feature, index) => (
+            <SwiperSlide key={index}>
+              <FeatureCard
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
             </SwiperSlide>
           ))}
         </Swiper>

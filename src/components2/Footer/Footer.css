@@ -9,3 +9,12 @@
   margin: 0;
   color: #6c757d;
 }
+
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 1rem;
+  }
+  .footer p {
+    font-size: 0.875rem;
+  }
+}

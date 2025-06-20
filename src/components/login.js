@@ -119,8 +119,8 @@ export const Component = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                                     <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your password" required />
                                 </div>
-                                <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700">
-                                    Login
+                                <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50">
+                                    Login/Signup
                                 </button>
                             </form>
                         </div>
@@ -155,7 +155,7 @@ export const Component = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Organization ID</label>
                                     <input type="text" name="organizationId" value={signupData.organizationId} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter organization ID" required />
                                 </div>
-                                <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700">
+                                <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-red-500/50">
                                     Create Account
                                 </button>
                             </form>

@@ -39,3 +39,19 @@
   color: #555;
   line-height: 1.6;
 }
+
+@media screen and (max-width: 768px) {
+  .feature-card {
+    padding: 1.5rem;
+    height: auto;
+    min-height: 240px;
+  }
+
+  .feature-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+  }
+}
