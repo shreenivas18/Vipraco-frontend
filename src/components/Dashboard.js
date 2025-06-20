@@ -74,7 +74,9 @@ const Dashboard = () => {
             const result = await api.post(endpoint, requestBody);
 
             let botResponse = 'Sorry, I could not find an answer.';
-            if (result.data && result.data.message) {
+            if (result.data && result.data.data && result.data.data.message) {
+                botResponse = result.data.data.message;
+            } else if (result.data && result.data.message) { // Fallback for simpler response
                 botResponse = result.data.message;
             }
 
@@ -85,7 +87,7 @@ const Dashboard = () => {
 
         } catch (err) {
             console.error('API Error:', err);
-            const errorMessage = err.response?.data?.message || 'An error occurred while fetching the response.';
+            const errorMessage = err.response?.data?.data?.message || err.response?.data?.message || 'An error occurred while fetching the response.';
             setMessages([
                 ...newMessages,
                 { sender: 'bot', text: errorMessage },

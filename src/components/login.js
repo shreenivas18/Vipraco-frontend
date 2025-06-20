@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 
+
 export const Component = () => {
     const navigate = useNavigate();
 
@@ -71,7 +72,7 @@ export const Component = () => {
 
     return (
         <div id="webcrumbs">
-            <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-8 py-12">
+            <div className="w-full min-h-screen bg-gray-50 px-8 py-12">
                 <div className="max-w-md mx-auto">
                     {/* Header */}
                     <div className="text-center mb-8">
@@ -94,21 +95,17 @@ export const Component = () => {
                                     document.getElementById("login-form").style.display = "block";
                                     document.getElementById("signup-form").style.display = "none";
                                     e.target.classList.add("bg-primary-500", "text-white");
-                                    e.target.classList.remove("bg-gray-50", "text-gray-600");
-                                    e.target.nextElementSibling.classList.add("bg-gray-50", "text-gray-600");
                                     e.target.nextElementSibling.classList.remove("bg-primary-500", "text-white");
                                 }}
                             >
                                 Login
                             </button>
                             <button
-                                className="flex-1 py-4 px-6 text-center font-semibold transition-all duration-300 bg-gray-50 text-gray-600 hover:bg-gray-100"
+                                className="flex-1 py-4 px-6 text-center font-semibold text-gray-600 transition-all duration-300 hover:bg-gray-100"
                                 onClick={(e) => {
-                                    document.getElementById("signup-form").style.display = "block";
                                     document.getElementById("login-form").style.display = "none";
+                                    document.getElementById("signup-form").style.display = "block";
                                     e.target.classList.add("bg-primary-500", "text-white");
-                                    e.target.classList.remove("bg-gray-50", "text-gray-600");
-                                    e.target.previousElementSibling.classList.add("bg-gray-50", "text-gray-600");
                                     e.target.previousElementSibling.classList.remove("bg-primary-500", "text-white");
                                 }}
                             >
@@ -118,41 +115,27 @@ export const Component = () => {
 
                         {/* Login Form */}
                         <div id="login-form" className="p-8">
-                            <form className="space-y-6" onSubmit={handleLogin}>
-                                {loginError && <div className="text-red-500 text-center text-sm mb-4">{loginError}</div>}
+                            <form onSubmit={handleLogin} className="space-y-6">
+                                {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                    <input
-                                        type="email"
-                                        value={loginEmail}
-                                        onChange={(e) => setLoginEmail(e.target.value)}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500"
-                                        placeholder="Enter your email"
-                                        required
-                                    />
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your email" required />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                                    <input
-                                        type="password"
-                                        value={loginPassword}
-                                        onChange={(e) => setLoginPassword(e.target.value)}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500"
-                                        placeholder="Enter your password"
-                                        required
-                                    />
+                                    <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="Enter your password" required />
                                 </div>
                                 <button type="submit" className="w-full bg-gradient-to-r from-primary-500 to-indigo-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-primary-600 hover:to-indigo-700">
-                                    Sign In
+                                    Login
                                 </button>
                             </form>
                         </div>
 
                         {/* Signup Form */}
                         <div id="signup-form" className="p-8" style={{ display: "none" }}>
-                            <form className="space-y-4" onSubmit={handleSignup}>
-                                {signupError && <div className="text-red-500 text-center text-sm mb-4">{signupError}</div>}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <form onSubmit={handleSignup} className="space-y-5">
+                                {signupError && <p className="text-red-500 text-sm">{signupError}</p>}
+                                <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
                                         <input type="text" name="firstName" value={signupData.firstName} onChange={handleSignupChange} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500" placeholder="First name" required />
@@ -198,6 +181,7 @@ export const Component = () => {
 
                     </div>
 
+                    {/* Footer */}
                     <div className="text-center mt-8">
                         <p className="text-gray-500 text-sm">Secure • Multi-tenant • AI-powered HR assistance</p>
                     </div>
