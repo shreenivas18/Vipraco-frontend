@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+import SpotlightCard from './SpotlightCard';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import './Dashboard.css'; // Import new styles
 import Waves from './Waves'; // Import the new Waves component
 import VoiceChat from './VoiceChat'; // Import the new VoiceChat component
 import Navbar from '../components2/Navbar/Navbar';
+import botImage from '../assets/bot-img.png'; // Import the bot image
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -13,12 +15,20 @@ const Dashboard = () => {
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef(null);
+    const inputRef = useRef(null); // Add a ref for the input field
     const [chatMode, setChatMode] = useState('selection'); // 'selection', 'text', 'voice'
 
     // Scroll to the bottom of the chat on new message
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
+
+    // Focus the input field when entering text chat or after bot replies
+    useEffect(() => {
+        if (chatMode === 'text' && !isTyping && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [chatMode, isTyping]);
 
     // Fetch user info and set initial welcome message
     useEffect(() => {
@@ -175,6 +185,7 @@ const Dashboard = () => {
                         <footer className="query-form">
                             <form onSubmit={handleSendMessage} style={{ display: 'flex', width: '100%' }}>
                                 <input
+                                    ref={inputRef}
                                     type="text"
                                     className="query-input"
                                     value={query}
@@ -195,15 +206,20 @@ const Dashboard = () => {
             default:
                 return (
                     <main className="mode-selection-container">
-                        <div className="chat-mode-card" onClick={() => setChatMode('text')}>
-                            <span className="material-symbols-outlined">chat</span>
-                            <h2>Text Chat</h2>
-                            <p>Type your questions and get answers from the HR assistant.</p>
+                        <div className="selection-image-container">
+                            <img src={botImage} alt="AI Assistant" className="selection-bot-img" />
                         </div>
-                        <div className="chat-mode-card" onClick={() => setChatMode('voice')}>
-                            <span className="material-symbols-outlined">mic</span>
-                            <h2>Voice Chat</h2>
-                            <p>Speak your questions and hear the responses from the HR assistant.</p>
+                        <div className="selection-cards-container">
+                            <SpotlightCard className="chat-mode-card" onClick={() => setChatMode('text')}>
+                                <span className="material-symbols-outlined">chat</span>
+                                <h2>Text Chat</h2>
+                                <p>Type your questions and get answers from the HR assistant.</p>
+                            </SpotlightCard>
+                            <SpotlightCard className="chat-mode-card" onClick={() => setChatMode('voice')}>
+                                <span className="material-symbols-outlined">mic</span>
+                                <h2>Voice Chat</h2>
+                                <p>Speak your questions and hear the responses from the HR assistant.</p>
+                            </SpotlightCard>
                         </div>
                     </main>
                 );
