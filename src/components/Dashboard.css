@@ -17,7 +17,7 @@
     max-height: 750px;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent 'frosted glass' effect */
     border-radius: 16px;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden;
@@ -28,7 +28,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background-color: #fff;
+    background-color: transparent;
     border-bottom: 1px solid #e9e9e9;
 }
 
@@ -69,8 +69,7 @@
 .chat-container {
     position: relative; /* Contain the absolutely positioned Waves component */
     flex-grow: 1;
-    padding: 1.5rem;
-    overflow-y: auto;
+    overflow: hidden; /* Let the message-list handle scrolling */
     display: flex;
     flex-direction: column;
     /* The background is now handled by the Waves component */
@@ -80,7 +79,9 @@
     flex-grow: 1;
     position: relative; /* Needed for z-index to work */
     z-index: 1; /* Bring the messages to the front */
-    pointer-events: none; /* Let mouse events pass through to the background */
+    background-color: transparent; /* Ensure it doesn't hide the waves */
+    overflow-y: auto; /* This container will scroll */
+    padding: 1.5rem;
 }
 
 @keyframes fadeIn {
@@ -99,7 +100,6 @@
     margin-bottom: 15px;
     max-width: 80%;
     animation: fadeIn 0.5s ease-in-out;
-    pointer-events: auto; /* Make individual messages clickable again */
 }
 
 .message.user {
@@ -151,7 +151,7 @@
 .query-form {
     display: flex;
     padding: 1rem;
-    background-color: #fff;
+    background-color: transparent;
     border-top: 1px solid #e9e9e9;
 }
 
