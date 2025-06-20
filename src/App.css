@@ -1,5 +1,15 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .App {
-  text-align: center;
+  position: relative;
+  background-color: #fff;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 1;
 }
 
 .App-logo {

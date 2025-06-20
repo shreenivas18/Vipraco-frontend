@@ -12,14 +12,14 @@ function App() {
   return (
     <div className="App">
       <Threads color={[0, 0, 0]} enableMouseInteraction={true} />
-      <Navbar />
-      <div className="main-content">
+      <div className="content-wrapper">
+        <Navbar />
         <Hero />
+        <Features />
+        <HowItWorks />
+        <ScrollToTopButton />
+        <Footer />
       </div>
-      <Features />
-      <HowItWorks />
-      <ScrollToTopButton />
-      <Footer />
     </div>
   );
 }
